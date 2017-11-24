@@ -139,6 +139,33 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>autoInstallBundleOnVM</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.sling</groupId>
+                        <artifactId>maven-sling-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>install-bundle</id>
+                                <goals>
+                                    <goal>install</goal>
+                                </goals>
+                                <configuration>
+                                    <!-- install to test AEM Server -->
+                                    <slingUrl>http://${vm.host}:${vm.port}/apps/alexa/install</slingUrl>
+                                    <usePut>true</usePut>
+                                    <user>${vm.username}</user>
+                                    <password>${vm.password}</password>
+                                </configuration>
+                            </execution>
+
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
