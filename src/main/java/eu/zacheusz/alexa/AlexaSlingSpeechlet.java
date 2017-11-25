@@ -54,8 +54,9 @@ public class AlexaSlingSpeechlet implements SpeechletV2 {
     protected final List<IntentHandler> handlers = new ArrayList<>();
 
     @Reference(cardinality = ReferenceCardinality.OPTIONAL_UNARY,
-            referenceInterface = SessionStartedHandler.class)
-    protected SessionStartedHandler sessionStartedHandler;
+            referenceInterface = SessionStartedHandler.class,
+            policy = ReferencePolicy.DYNAMIC)
+    protected volatile SessionStartedHandler sessionStartedHandler;
 
     @Override
     public void onSessionStarted(SpeechletRequestEnvelope<SessionStartedRequest> requestEnvelope) {
