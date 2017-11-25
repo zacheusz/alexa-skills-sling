@@ -148,7 +148,7 @@ public class AlexaSlingSpeechletServlet extends SlingAllMethodsServlet {
     @Override
     protected void doGet(final SlingHttpServletRequest servletRequest, final SlingHttpServletResponse servletResponse)
             throws IOException {
-        log.info("GET diagnostic mehtod");
+        log.warn("This is HTTP GET diagnostic mehtod. To run Alexa Skill logic use HTTP POST.");
         try ( final PrintWriter writer = servletResponse.getWriter()) {
             writer.write(getClass() + " is running\n");
             writer.write("customSpeechlet: " + customSpeechlet + '\n');
