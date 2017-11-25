@@ -52,9 +52,18 @@ public class AlexaSlingSpeechlet implements SpeechletV2 {
             policy = ReferencePolicy.DYNAMIC)
     protected final List<IntentHandler> handlers = new ArrayList<>();
 
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL_UNARY,
+            referenceInterface = SessionStartedHandler.class)
+    protected SessionStartedHandler sessionStartedHandler;
+
     @Override
     public void onSessionStarted(SpeechletRequestEnvelope<SessionStartedRequest> requestEnvelope) {
-        log.info("onSessionStarted"); //TODO
+        log.info("onSessionStarted");
+        if (this.sessionStartedHandler != null) {
+            this.sessionStartedHandler.handleSessionStarted(requestEnvelope);
+        } else {
+            log.info("no sessionStartedHandler");
+        }
     }
 
     @Override
