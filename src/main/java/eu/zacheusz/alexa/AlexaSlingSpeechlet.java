@@ -24,7 +24,10 @@ import com.amazon.speech.json.SpeechletRequestEnvelope;
 import com.amazon.speech.speechlet.*;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import eu.zacheusz.alexa.handler.IntentHandler;
 
@@ -32,6 +35,7 @@ import eu.zacheusz.alexa.handler.LaunchHandler;
 import eu.zacheusz.alexa.handler.SessionEndedHandler;
 import eu.zacheusz.alexa.handler.SessionStartedHandler;
 import org.apache.felix.scr.annotations.*;
+import org.apache.sling.commons.osgi.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,10 +49,17 @@ import org.slf4j.LoggerFactory;
         metatype = true,
         configurationFactory = true)
 @Service(AlexaSlingSpeechlet.class)
-@Properties({@Property(label = "Supported skill name.", name = "skill")}) //TODO
 public class AlexaSlingSpeechlet implements SpeechletV2 {
 
     protected final Logger log = LoggerFactory.getLogger(getClass());
+
+    @Property(label = "Supported skill name.") //TODO
+    private static final String SKILL_PROPERTY = "skill";
+
+    @Property(label = "Default onLaunch message.", value = "")
+    private static final String ON_LAUNCH_MESSAGE_PROPERTY = "onLaunchMessage";
+
+    private String onLaunchMessage;
 
     @Reference(cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE,
             bind = "bindHanlder", unbind = "unbindHanlder",
@@ -71,6 +82,11 @@ public class AlexaSlingSpeechlet implements SpeechletV2 {
             policy = ReferencePolicy.DYNAMIC)
     protected volatile LaunchHandler launchHandler;
 
+    @Activate
+    protected final void activate(final Map<String, Object> properties) throws Exception {
+        this.onLaunchMessage = PropertiesUtil.toString(properties.get(ON_LAUNCH_MESSAGE_PROPERTY), "");
+    }
+
     @Override
     public void onSessionStarted(SpeechletRequestEnvelope<SessionStartedRequest> requestEnvelope) {
         log.info("onSessionStarted"); //TODO improve log message and level
@@ -89,8 +105,8 @@ public class AlexaSlingSpeechlet implements SpeechletV2 {
             return this.launchHandler.handleLaunch(requestEnvelope);
         }
         final PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-        speech.setText(""); //TODO?
-        SpeechletResponse response = SpeechletResponse.newTellResponse(speech);
+        speech.setText(this.onLaunchMessage);
+        final SpeechletResponse response = SpeechletResponse.newTellResponse(speech);
         return response;
     }
 
