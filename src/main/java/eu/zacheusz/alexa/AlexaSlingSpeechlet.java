@@ -59,7 +59,7 @@ public class AlexaSlingSpeechlet implements SpeechletV2 {
     @Property(label = "Default onLaunch message.", value = "")
     private static final String ON_LAUNCH_MESSAGE_PROPERTY = "onLaunchMessage";
 
-    private String onLaunchMessage;
+    private String onLaunchMessage = ""; //TODO documentation
 
     @Reference(cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE,
             bind = "bindHanlder", unbind = "unbindHanlder",
@@ -97,13 +97,20 @@ public class AlexaSlingSpeechlet implements SpeechletV2 {
         }
     }
 
-    //TODO implement handler
+    //TODO documentation
     @Override
     public SpeechletResponse onLaunch(SpeechletRequestEnvelope<LaunchRequest> requestEnvelope) {
         log.info("onLaunch"); //TODO improve log message and level
+        final SpeechletResponse response;
         if (this.launchHandler != null) {
-            return this.launchHandler.handleLaunch(requestEnvelope);
+            response = this.launchHandler.handleLaunch(requestEnvelope);
+        } else {
+            response = newDefaultOnLaunchMessage();
         }
+        return response;
+    }
+
+    protected SpeechletResponse newDefaultOnLaunchMessage() {
         final PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
         speech.setText(this.onLaunchMessage);
         final SpeechletResponse response = SpeechletResponse.newTellResponse(speech);
