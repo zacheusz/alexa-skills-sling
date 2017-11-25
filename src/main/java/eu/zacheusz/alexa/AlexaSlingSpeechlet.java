@@ -61,6 +61,12 @@ public class AlexaSlingSpeechlet implements SpeechletV2 {
 
     private String onLaunchMessage = ""; //TODO documentation
 
+    @Property(label = "Speech response when there is no handler.",
+            value = "I'm sorry - there is no implementation for this request.")
+    private static final String NO_HANDLER_MESSAGE_PROPERTY = "noHandlerMessage";
+
+    private String noHandlerMessage = ""; //TODO documentation
+
     @Reference(cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE,
             bind = "bindHanlder", unbind = "unbindHanlder",
             referenceInterface = IntentHandler.class,
@@ -85,6 +91,7 @@ public class AlexaSlingSpeechlet implements SpeechletV2 {
     @Activate
     protected final void activate(final Map<String, Object> properties) throws Exception {
         this.onLaunchMessage = PropertiesUtil.toString(properties.get(ON_LAUNCH_MESSAGE_PROPERTY), "");
+        this.noHandlerMessage = PropertiesUtil.toString(properties.get(NO_HANDLER_MESSAGE_PROPERTY), "");
     }
 
     @Override
@@ -111,10 +118,13 @@ public class AlexaSlingSpeechlet implements SpeechletV2 {
     }
 
     protected SpeechletResponse newDefaultOnLaunchMessage() {
+        return newTellResponse(this.onLaunchMessage);
+    }
+
+    protected SpeechletResponse newTellResponse(final String text) {
         final PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-        speech.setText(this.onLaunchMessage);
-        final SpeechletResponse response = SpeechletResponse.newTellResponse(speech);
-        return response;
+        speech.setText(text);
+        return SpeechletResponse.newTellResponse(speech);
     }
 
     @Override
@@ -128,10 +138,7 @@ public class AlexaSlingSpeechlet implements SpeechletV2 {
                 return handler.handleIntent(requestEnvelope);//TODO warn if there are more handlers than one
             }
         }
-        final PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-        speech.setText("I'm sorry - I can't handle this request."); //TODO exception?
-        final SpeechletResponse response = SpeechletResponse.newTellResponse(speech);
-        return response;
+        return newTellResponse(this.noHandlerMessage); //TODO exception instead?
     }
 
     @Override
