@@ -39,8 +39,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.Servlet;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Dictionary;
 
 /**
@@ -53,7 +52,7 @@ import java.util.Dictionary;
         metatype = true, immediate = true)
 @Service(Servlet.class)
 @Properties({
-        @Property(name = "sling.servlet.methods", value = {"POST"}, propertyPrivate = true),
+        @Property(name = "sling.servlet.methods", value = {"POST", "GET"}, propertyPrivate = true),
         @Property(name = "sling.servlet.paths", value = {"/bin/services/alexa"}, propertyPrivate = true),
         @Property(label = "Disable request signature checking.",
                 name = Sdk.DISABLE_REQUEST_SIGNATURE_CHECK_SYSTEM_PROPERTY, boolValue = false),
@@ -144,5 +143,16 @@ public class AlexaSlingSpeechletServlet extends SlingAllMethodsServlet {
 
     protected final SpeechletV2 getSpeechlet() {
         return this.customSpeechlet == null ? this.slingSpeechlet : this.customSpeechlet;
+    }
+
+    @Override
+    protected void doGet(final SlingHttpServletRequest servletRequest, final SlingHttpServletResponse servletResponse)
+            throws IOException {
+        log.info("GET diagnostic mehtod");
+        try ( final PrintWriter writer = servletResponse.getWriter()) {
+            writer.write(getClass() + " is running\n");
+            writer.write("customSpeechlet: " + customSpeechlet + "\n");
+            writer.write("slingSpeechlet: " + slingSpeechlet + "\n");
+        }
     }
 }
