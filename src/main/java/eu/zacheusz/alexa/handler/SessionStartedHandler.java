@@ -18,7 +18,7 @@
   specific language governing permissions and limitations
   under the License.
  */
-package eu.zacheusz.alexa;
+package eu.zacheusz.alexa.handler;
 
 import com.amazon.speech.json.SpeechletRequestEnvelope;
 import com.amazon.speech.speechlet.SessionStartedRequest;

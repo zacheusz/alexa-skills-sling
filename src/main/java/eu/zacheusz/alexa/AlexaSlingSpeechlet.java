@@ -20,13 +20,14 @@
  */
 package eu.zacheusz.alexa;
 
-import com.amazon.speech.Sdk;
 import com.amazon.speech.json.SpeechletRequestEnvelope;
 import com.amazon.speech.speechlet.*;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.zacheusz.alexa.handler.IntentHandler;
+import eu.zacheusz.alexa.handler.SessionStartedHandler;
 import org.apache.felix.scr.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
