@@ -28,6 +28,14 @@
     <name>Alexa Skills Sling</name>
     <description>A framework which makes hosting Alexa Skills logic on Sling servers easy.</description>
     <url>https://github.com/zacheusz/alexa-skills-sling</url>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    
     <build>
         <plugins>
             <plugin>
