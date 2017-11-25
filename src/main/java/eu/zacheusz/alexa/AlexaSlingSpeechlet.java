@@ -74,7 +74,7 @@ public class AlexaSlingSpeechlet implements SpeechletV2 {
         final String intentName = request.getIntent().getName();
         for (final IntentHandler handler : this.handlers) {
             if (handler.supportsIntent(intentName)) {
-                return handler.handle(requestEnvelope);
+                return handler.handleIntent(requestEnvelope);
             }
         }
         final PlainTextOutputSpeech speech = new PlainTextOutputSpeech();

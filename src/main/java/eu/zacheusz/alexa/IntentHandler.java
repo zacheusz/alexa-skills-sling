@@ -20,13 +20,16 @@
  */
 package eu.zacheusz.alexa;
 
+import com.amazon.speech.json.SpeechletRequestEnvelope;
 import com.amazon.speech.speechlet.IntentRequest;
+import com.amazon.speech.speechlet.SpeechletResponse;
 
 /**
  * @author zacheusz
  */
-public interface IntentHandler extends Handler<IntentRequest> {
+public interface IntentHandler {
 
     boolean supportsIntent(String intentName);
+    SpeechletResponse handleIntent(SpeechletRequestEnvelope<IntentRequest> requestEnvelope);
 }
 
