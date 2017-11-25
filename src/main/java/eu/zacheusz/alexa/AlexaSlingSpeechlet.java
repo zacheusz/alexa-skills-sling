@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
         description = "Alexa Speechlet OSGi Service",
         metatype = true,
         configurationFactory = true)
-@Service(SpeechletV2.class)
+@Service(AlexaSlingSpeechlet.class)
 @Properties({@Property(label = "Supported skill name.", name = "skill")}) //TODO
 public class AlexaSlingSpeechlet implements SpeechletV2 {
 

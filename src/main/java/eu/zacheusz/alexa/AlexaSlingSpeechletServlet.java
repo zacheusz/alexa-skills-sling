@@ -62,8 +62,13 @@ public class AlexaSlingSpeechletServlet extends SlingAllMethodsServlet {
 
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL_UNARY,
+            referenceInterface = SpeechletV2.class,
+            policy = ReferencePolicy.DYNAMIC)
+    protected volatile SpeechletV2 customSpeechlet;
+
     @Reference
-    protected SpeechletV2 speechlet;
+    protected AlexaSlingSpeechlet slingSpeechlet;
 
     protected final SpeechletRequestHandler requestHandler = new ServletSpeechletRequestHandler();
 
@@ -134,6 +139,10 @@ public class AlexaSlingSpeechletServlet extends SlingAllMethodsServlet {
 
     protected byte[] handleSpeechletCall(final byte[] speechletRequest)
             throws SpeechletRequestHandlerException, SpeechletException, IOException {
-        return this.requestHandler.handleSpeechletCall(this.speechlet, speechletRequest);
+        return this.requestHandler.handleSpeechletCall(getSpeechlet(), speechletRequest);
+    }
+
+    protected final SpeechletV2 getSpeechlet() {
+        return this.customSpeechlet == null ? this.slingSpeechlet : this.customSpeechlet;
     }
 }
