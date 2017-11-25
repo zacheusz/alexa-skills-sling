@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.zacheusz.alexa.handler.IntentHandler;
+
+import eu.zacheusz.alexa.handler.LaunchHandler;
 import eu.zacheusz.alexa.handler.SessionEndedHandler;
 import eu.zacheusz.alexa.handler.SessionStartedHandler;
 import org.apache.felix.scr.annotations.*;
@@ -64,6 +66,11 @@ public class AlexaSlingSpeechlet implements SpeechletV2 {
             policy = ReferencePolicy.DYNAMIC)
     protected volatile SessionEndedHandler sessionEndedHandler;
 
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL_UNARY,
+            referenceInterface = LaunchHandler.class,
+            policy = ReferencePolicy.DYNAMIC)
+    protected volatile LaunchHandler launchHandler;
+
     @Override
     public void onSessionStarted(SpeechletRequestEnvelope<SessionStartedRequest> requestEnvelope) {
         log.info("onSessionStarted"); //TODO improve log message and level
@@ -78,8 +85,11 @@ public class AlexaSlingSpeechlet implements SpeechletV2 {
     @Override
     public SpeechletResponse onLaunch(SpeechletRequestEnvelope<LaunchRequest> requestEnvelope) {
         log.info("onLaunch"); //TODO improve log message and level
+        if (this.launchHandler != null) {
+            return this.launchHandler.handleLaunch(requestEnvelope);
+        }
         final PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-        speech.setText("");
+        speech.setText(""); //TODO?
         SpeechletResponse response = SpeechletResponse.newTellResponse(speech);
         return response;
     }
