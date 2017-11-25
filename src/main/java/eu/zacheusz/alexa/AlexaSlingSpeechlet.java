@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.zacheusz.alexa.handler.IntentHandler;
+import eu.zacheusz.alexa.handler.SessionEndedHandler;
 import eu.zacheusz.alexa.handler.SessionStartedHandler;
 import org.apache.felix.scr.annotations.*;
 import org.slf4j.Logger;
@@ -58,9 +59,14 @@ public class AlexaSlingSpeechlet implements SpeechletV2 {
             policy = ReferencePolicy.DYNAMIC)
     protected volatile SessionStartedHandler sessionStartedHandler;
 
+    @Reference(cardinality = ReferenceCardinality.OPTIONAL_UNARY,
+            referenceInterface = SessionEndedHandler.class,
+            policy = ReferencePolicy.DYNAMIC)
+    protected volatile SessionEndedHandler sessionEndedHandler;
+
     @Override
     public void onSessionStarted(SpeechletRequestEnvelope<SessionStartedRequest> requestEnvelope) {
-        log.info("onSessionStarted");
+        log.info("onSessionStarted"); //TODO improve log message and level
         if (this.sessionStartedHandler != null) {
             this.sessionStartedHandler.handleSessionStarted(requestEnvelope);
         } else {
@@ -68,9 +74,10 @@ public class AlexaSlingSpeechlet implements SpeechletV2 {
         }
     }
 
+    //TODO implement handler
     @Override
     public SpeechletResponse onLaunch(SpeechletRequestEnvelope<LaunchRequest> requestEnvelope) {
-        log.info("onLaunch"); //TODO
+        log.info("onLaunch"); //TODO improve log message and level
         final PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
         speech.setText("");
         SpeechletResponse response = SpeechletResponse.newTellResponse(speech);
@@ -85,7 +92,7 @@ public class AlexaSlingSpeechlet implements SpeechletV2 {
         final String intentName = request.getIntent().getName();
         for (final IntentHandler handler : this.handlers) {
             if (handler.supportsIntent(intentName)) {
-                return handler.handleIntent(requestEnvelope);
+                return handler.handleIntent(requestEnvelope);//TODO warn if there are more handlers than one
             }
         }
         final PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
@@ -96,7 +103,12 @@ public class AlexaSlingSpeechlet implements SpeechletV2 {
 
     @Override
     public void onSessionEnded(SpeechletRequestEnvelope<SessionEndedRequest> requestEnvelope) {
-        log.info("onSessionEnded"); //TODO
+        log.info("onSessionEnded"); //TODO improve log message and level
+        if (this.sessionEndedHandler != null) {
+            this.sessionEndedHandler.handleSessionEnded(requestEnvelope);
+        } else {
+            log.info("no sessionEndedHandler");
+        }
     }
 
     protected void bindHanlder(final IntentHandler handler) {
