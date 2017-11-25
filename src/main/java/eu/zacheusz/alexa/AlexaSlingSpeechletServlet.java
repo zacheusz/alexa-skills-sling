@@ -151,8 +151,12 @@ public class AlexaSlingSpeechletServlet extends SlingAllMethodsServlet {
         log.info("GET diagnostic mehtod");
         try ( final PrintWriter writer = servletResponse.getWriter()) {
             writer.write(getClass() + " is running\n");
-            writer.write("customSpeechlet: " + customSpeechlet + "\n");
-            writer.write("slingSpeechlet: " + slingSpeechlet + "\n");
+            writer.write("customSpeechlet: " + customSpeechlet + '\n');
+            writer.write("slingSpeechlet: " + slingSpeechlet + '\n');
+            if (slingSpeechlet != null) {
+                writer.write("slingSpeechlet has " + slingSpeechlet.handlers.size() + " handlers\n");
+            }
+            writer.write("disableRequestSignatureCheck: " + disableRequestSignatureCheck + '\n');
         }
     }
 }
