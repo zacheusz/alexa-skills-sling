@@ -27,7 +27,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import eu.zacheusz.alexa.handler.IntentHandler;
 
@@ -128,18 +130,30 @@ public class AlexaSlingSpeechlet implements SpeechletV2 {
     }
 
     @Override
-    public SpeechletResponse onIntent(SpeechletRequestEnvelope<IntentRequest> requestEnvelope) {
+    public SpeechletResponse onIntent(final SpeechletRequestEnvelope<IntentRequest> requestEnvelope) {
         final IntentRequest request = requestEnvelope.getRequest();
-        final Session session = requestEnvelope.getSession();
-        log.info("processing intent request " + request.getIntent().getName());
         final String intentName = request.getIntent().getName();
-        for (final IntentHandler handler : this.handlers) {
-            if (handler.supportsIntent(intentName)) {
-                return handler.handleIntent(requestEnvelope);//TODO warn if there are more handlers than one
-            }
+        log.info("processing intent request {}", intentName);
+        //filter handlers
+        final Supplier<Stream<IntentHandler>> filtered =
+                () -> this.handlers.stream().filter(h -> h.supportsIntent(intentName));
+        if (filtered.get().count() > 1) {
+            log.warn("Multiple handlers supports {} intent.", intentName);
         }
-        return newTellResponse(this.noHandlerMessage); //TODO exception instead?
+        return filtered.get().findFirst().orElse(this.defaultIntentHandler).handleIntent(requestEnvelope);
     }
+
+    protected final IntentHandler defaultIntentHandler = new IntentHandler() {
+        @Override
+        public boolean supportsIntent(String intentName) {
+            return true;
+        }
+
+        @Override
+        public SpeechletResponse handleIntent(SpeechletRequestEnvelope<IntentRequest> requestEnvelope) {
+            return newTellResponse(AlexaSlingSpeechlet.this.noHandlerMessage);
+        }
+    };
 
     @Override
     public void onSessionEnded(SpeechletRequestEnvelope<SessionEndedRequest> requestEnvelope) {
