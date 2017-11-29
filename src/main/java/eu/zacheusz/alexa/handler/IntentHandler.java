@@ -25,11 +25,37 @@ import com.amazon.speech.speechlet.IntentRequest;
 import com.amazon.speech.speechlet.SpeechletResponse;
 
 /**
+ * Handling speech initiated requests.<br>
+ *
+ * This is where the logic lives. Intent requests are handled by this class.
+ *
+ *
  * @author zacheusz
  */
 public interface IntentHandler {
 
+    /**
+     * Check if the handler has logic implementation for the intent with the given name.
+     *
+     * @param intentName the name of the intent
+     * @return <code>true</code> if the handler supports the intent
+     * with a given name and <code>false</code> if it doesn't support it
+     */
     boolean supportsIntent(String intentName);
+
+    /**
+     * Handling speech initiated requests.<br>
+     *
+     * This is where the logic lives. Intent requests are handled by this method
+     * and return responses to render to the user.<br>
+     *
+     * If this is the initial request of a new session, {@link Session#isNew()}
+     * returns {@code true}. Otherwise, this is a subsequent request within an existing session.
+     *
+     * @param requestEnvelope
+     *            the intent request envelope to handle
+     * @return the response, spoken and visual, to the request
+     */
     SpeechletResponse handleIntent(SpeechletRequestEnvelope<IntentRequest> requestEnvelope);
 }
 

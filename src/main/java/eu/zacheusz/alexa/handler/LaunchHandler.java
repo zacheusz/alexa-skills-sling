@@ -26,9 +26,23 @@ import com.amazon.speech.speechlet.LaunchRequest;
 import com.amazon.speech.speechlet.SpeechletResponse;
 
 /**
+ * Sling Service which expose this interface will handle a speech initiated request
+ * to start the skill without providing an {@code Intent}.
+ *
  * @author zacheusz
  */
 public interface LaunchHandler {
+
+
+    /**
+     * Entry point for handling a speech initiated request to start the skill
+     * without providing an {@code Intent}.<br>
+     *
+     *
+     * @param requestEnvelope
+     *            the launch request envelope
+     * @return the response, spoken and visual, to the request
+     */
     SpeechletResponse handleLaunch(SpeechletRequestEnvelope<LaunchRequest> requestEnvelope);
 }
 

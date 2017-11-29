@@ -24,8 +24,20 @@ import com.amazon.speech.json.SpeechletRequestEnvelope;
 import com.amazon.speech.speechlet.SessionStartedRequest;
 
 /**
+ * Sling service which expose this interface will be notified that a new session
+ * started as a result of a user interacting with the device.
+ *
  * @author zacheusz
  */
 public interface SessionStartedHandler  {
+
+    /**
+     * Used to notify that a new session started as a result of a user interacting with the device.
+     * This method enables services to perform initialization logic and allows for session
+     * attributes to be stored for subsequent requests.
+     *
+     * @param requestEnvelope
+     *            the session started request envelope
+     */
     void handleSessionStarted(SpeechletRequestEnvelope<SessionStartedRequest> requestEnvelope);
 }

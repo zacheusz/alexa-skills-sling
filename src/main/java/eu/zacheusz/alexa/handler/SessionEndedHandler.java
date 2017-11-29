@@ -25,8 +25,20 @@ import com.amazon.speech.speechlet.SessionEndedRequest;
 import com.amazon.speech.speechlet.SessionStartedRequest;
 
 /**
+ * Sling Service which expose this interface will be notified that the session ended
+ * as a result of the user interacting, or not interacting with the device.
+ *
  * @author zacheusz
  */
 public interface SessionEndedHandler {
+    /**
+     * Callback used to notify that the session ended as a result of the user interacting, or not
+     * interacting with the device. This method is not invoked if the {@code IntentHandler} itself
+     * ended the session using {@link SpeechletResponse#setNullableShouldEndSession(Boolean)}.
+     *
+     * @param requestEnvelope
+     *            the end of session request envelope
+     */
+
     void handleSessionEnded(SpeechletRequestEnvelope<SessionEndedRequest> requestEnvelope);
 }
