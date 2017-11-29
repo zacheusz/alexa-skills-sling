@@ -60,6 +60,12 @@
         </repository>
     </distributionManagement>
 
+    <properties>
+        <alexa-skills-kit.version>1.8.0</alexa-skills-kit.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+
     <build>
         <plugins>
             <plugin>
@@ -83,7 +89,7 @@
                 <configuration>
                 <instructions>
                     <Embed-Dependency>alexa-skills-kit,aws-lambda-java-core</Embed-Dependency>
-                    <Export-Package>com.amazon.speech.*,eu.zacheusz.alexa.*</Export-Package>
+                    <Export-Package>com.amazon.speech.*;version=${alexa-skills-kit.version},eu.zacheusz.alexa.*</Export-Package>
                 </instructions>
                 </configuration>
             </plugin>
@@ -190,7 +196,7 @@
         <dependency>
             <groupId>com.amazon.alexa</groupId>
             <artifactId>alexa-skills-kit</artifactId>
-            <version>1.8.0</version>
+            <version>${alexa-skills-kit.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -329,7 +335,4 @@
             </build>
         </profile>
     </profiles>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 </project>
