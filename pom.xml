@@ -24,7 +24,7 @@
     <groupId>eu.zacheusz.sling.alexa</groupId>
     <artifactId>alexa-skills-sling</artifactId>
     <packaging>bundle</packaging>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.2.1</version>
     <name>Alexa Skills Sling</name>
     <description>A framework which makes hosting Alexa Skills logic on Sling servers easy.</description>
     <url>https://github.com/zacheusz/alexa-skills-sling</url>
@@ -46,7 +46,7 @@
         <connection>scm:git:git@github.com:zacheusz/alexa-skills-sling.git</connection>
         <developerConnection>scm:git:git@github.com:zacheusz/alexa-skills-sling.git</developerConnection>
         <url>https://github.com/zacheusz/alexa-skills-sling/tree/${project.scm.tag}</url>
-        <tag>master</tag>
+        <tag>1.2.1</tag>
     </scm>
 
     <distributionManagement>
