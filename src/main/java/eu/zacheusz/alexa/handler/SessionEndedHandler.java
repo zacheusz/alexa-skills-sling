@@ -34,7 +34,7 @@ public interface SessionEndedHandler {
     /**
      * Callback used to notify that the session ended as a result of the user interacting, or not
      * interacting with the device. This method is not invoked if the {@code IntentHandler} itself
-     * ended the session using {@link SpeechletResponse#setNullableShouldEndSession(Boolean)}.
+     * ended the session using {@link com.amazon.speech.speechlet.SpeechletResponse#setNullableShouldEndSession(Boolean)}.
      *
      * @param requestEnvelope
      *            the end of session request envelope

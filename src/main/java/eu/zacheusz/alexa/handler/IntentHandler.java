@@ -49,7 +49,7 @@ public interface IntentHandler {
      * This is where the logic lives. Intent requests are handled by this method
      * and return responses to render to the user.<br>
      *
-     * If this is the initial request of a new session, {@link Session#isNew()}
+     * If this is the initial request of a new session, {@link com.amazon.speech.speechlet.Session#isNew()}
      * returns {@code true}. Otherwise, this is a subsequent request within an existing session.
      *
      * @param requestEnvelope
